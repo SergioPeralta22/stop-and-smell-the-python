@@ -31,6 +31,25 @@ class UserManager(BaseUserManager):
         user.set_password(password)
         user.save(using=self._db)
 
+        return user
+
+    def create_superuser(self, username, email, password=None, **kwargs):
+        """Create and return a `User` with superuser (admin) permissions."""
+
+        if password is None:
+            raise TypeError('Superusers must have a password.')
+        if email is None:
+            raise TypeError('Superusers must have an email address.')
+        if username is None:
+            raise TypeError('Superusers must have a username.')
+
+        user = self.create_user(username, email, password, **kwargs)
+        user.is_superuser = True
+        user.is_staff = True
+        user.save(using=self._db)
+
+        return user
+
 
 class User(AbstractBaseUser, PermissionsMixin):
     public_id = models.UUIDField(

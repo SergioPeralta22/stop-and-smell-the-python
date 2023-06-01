@@ -15,3 +15,5 @@ config/local/
 
 *.swp
 .DS_Store
+
+bitacora.md

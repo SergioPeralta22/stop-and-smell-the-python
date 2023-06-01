@@ -17,3 +17,7 @@ config/local/
 .DS_Store
 
 bitacora.md
+
+Makefile
+
+

@@ -1,3 +1,5 @@
+from django.contrib.auth.models import Permission
+from django.contrib.auth.models import Group
 import uuid
 
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
@@ -11,6 +13,7 @@ from django.http import Http404
 
 # define a class to create a user and superuser
 class UserManager(BaseUserManager):
+
     def get_object_by_public_id(self, public_id):
         try:
             instance = self.get(public_id=public_id)
@@ -52,6 +55,10 @@ class UserManager(BaseUserManager):
 
 
 class User(AbstractBaseUser, PermissionsMixin):
+
+    groups = models.ManyToManyField(Group, related_name='custom_user_groups')
+    user_permissions = models.ManyToManyField(
+        Permission, related_name='custom_user_permissions')
     public_id = models.UUIDField(
         db_index=True, default=uuid.uuid4, editable=False)
     username = models.CharField(db_index=True, max_length=255, unique=True)
